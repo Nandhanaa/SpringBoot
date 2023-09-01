@@ -46,6 +46,7 @@ public String removebyreq(@RequestParam ("id") int id) {
 	ps.deleteDetails(id);
 	return "Given BatchId"+id+"is deleted";
 }
+	//delete
 	@DeleteMapping("deletecheck/{id}")
 public ResponseEntity<String> cdelete(@PathVariable ("id") int id){
 	boolean deleted=ps.checkdelete(id);
@@ -64,5 +65,42 @@ public ResponseEntity<?>getuserById(@PathVariable int id){
 	}
 	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Batch "+id+"not found");
 }
+
+	
+	//sort by asc
+		@GetMapping("/sortbyAsc/{name}")
+		public List<Pharmodel> sortasc(@PathVariable("name") String name){
+			return ps.sortbyAsc(name);
+			
+		} 
+		//sort by desc
+		@GetMapping("/sortbyDesc/{name}")
+		public List<Pharmodel> sortdes(@PathVariable("name") String name){
+			return ps.sortbyDesc(name);
+		}
+	//pagination
+		@GetMapping("/pagin/{pn}/{ps}")
+		public List<Pharmodel> paginex(@PathVariable("pn") int pn,@PathVariable("ps") int size){
+			return ps.pagination(pn,size);
+		}
+	//pagination by sort
+		@GetMapping("/pagesort/{pn}/{ps}/{name}")
+		public List<Pharmodel> pagesortex(@PathVariable("pn") int pn,@PathVariable("size") int size,@PathVariable("name") String name){
+			return ps.pagesort(pn, size, name);
+		}
+		//query
+		//to get all rows
+		@GetMapping("/getAllrows")
+		public List<Pharmodel> getAllrows()
+		{
+			 return ps.getAllrows();
+		}
+		//to disp specf rows
+		@GetMapping("/getSpecific/{batchId}/{drugName}")
+		public List<Pharmodel> getSpecrows(@PathVariable("batchId") int batchId,@PathVariable("drugName") String drugName)
+		{
+			 return ps.getrowserv(batchId, drugName);
+		}
+		
 }
 

@@ -1,14 +1,21 @@
 package com.example.demo.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Drug_Details")
+@Table(name="PharmDetails")
 public class Pharmodel {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -16,11 +23,19 @@ public class Pharmodel {
 	private String drugName;
 	@Column(name="DrugType")
 	private String medType;
-	private int Price;
+	private int price;
 	private String date;
 	private int rackNo;
 	private int shelfNo;
-public int getBatchId() {
+	//One to One(Billdetails)
+	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@JoinColumn(name="batch_ID")
+	private Billmod bill;
+	//One to Many(Patient Details)
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "fkid", referencedColumnName = "batchId")
+	private List<Custmod> customer;
+	public int getBatchId() {
 		return batchId;
 	}
 	public void setBatchId(int batchId) {
@@ -39,10 +54,10 @@ public int getBatchId() {
 		this.medType = medType;
 	}
 	public int getPrice() {
-		return Price;
+		return price;
 	}
 	public void setPrice(int price) {
-		Price = price;
+		this.price = price;
 	}
 	public String getDate() {
 		return date;
@@ -62,6 +77,19 @@ public int getBatchId() {
 	public void setShelfNo(int shelfNo) {
 		this.shelfNo = shelfNo;
 	}
+	public Billmod getBill() {
+		return bill;
+	}
+	public void setBill(Billmod bill) {
+		this.bill = bill;
+	}
+	public List<Custmod> getCustomer() {
+		return customer;
+	}
+	public void setCustomer(List<Custmod> customer) {
+		this.customer = customer;
+	}
+
 
 }
 

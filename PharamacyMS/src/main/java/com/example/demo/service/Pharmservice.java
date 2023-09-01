@@ -4,9 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
 
+
 import com.example.demo.model.Pharmodel;
+
 import com.example.demo.repository.Pharmrepo;
 
 @Service
@@ -43,4 +49,34 @@ public class Pharmservice {
 		}
 		return null;
 	}
+	//sortbyasc 
+	public List<Pharmodel> sortbyAsc(String drugName){
+			return pro.findAll(Sort.by(drugName).ascending());
+		}
+	//sortbydes
+		public List<Pharmodel> sortbyDesc(String drugName){
+			return pro.findAll(Sort.by(drugName).descending());
+		}
+		//pagination
+		public List<Pharmodel> pagination(int pn,int ps){
+			Page<Pharmodel> cont=pro.findAll(PageRequest.of(pn, ps));
+			return cont.getContent();
+		}
+		//pagination by sorting
+		public List<Pharmodel> pagesort(int pn,int ps,String name){
+			Page<Pharmodel> tp=pro.findAll(PageRequest.of(pn, ps,Sort.by(name)));
+			return tp.getContent();
+		}
+		//query
+		//to get all rows
+		public List<Pharmodel> getAllrows()
+		{
+			return pro.getAllRows();
+		}
+		//get specific rows
+				public List<Pharmodel> getrowserv(int batchId,String drugName)
+				{
+					return pro.getRows(batchId, drugName);
+				}
+	 
 }
